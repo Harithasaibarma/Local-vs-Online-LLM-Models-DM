@@ -1,0 +1,56 @@
+--ROLL UP
+SELECT 
+    {[Measures].[Fact Usage Count]} ON COLUMNS,
+    NON EMPTY 
+    CROSSJOIN(
+        [Dim Model].[Model Name].Members,
+        CROSSJOIN(
+            [Dim Prompt].[Prompt Size].Members,
+            CROSSJOIN(
+                [Dim Tool].[Tool Name].Members,
+                [Dim Frequency].[Frequency Description].Members
+            )
+        )
+    ) ON ROWS
+FROM [star cube]
+
+
+
+
+--DRILL DOWN
+
+SELECT 
+    {[Measures].[Fact Usage Count]} ON COLUMNS,
+    NON EMPTY (
+        [Dim User].[User Name].[User Name].MEMBERS *
+        [Dim Tool].[Tool Name].[Tool Name].MEMBERS *
+        [Dim Frequency].[Frequency Description].[Frequency Description].MEMBERS
+    ) ON ROWS
+FROM [star cube]
+
+--SLICE
+SELECT 
+    {[Measures].[Fact Usage Count]} ON COLUMNS
+FROM [star cube]
+WHERE ([Dim Tool].[Tool Name].[Keras])
+
+
+--DICE
+SELECT 
+    {[Measures].[Fact Usage Count]} ON COLUMNS,
+    NON EMPTY (
+        [Dim User].[User Name].[User Name].MEMBERS *
+        [Dim Tool].[Tool Name].[Tool Name].MEMBERS
+    ) ON ROWS
+FROM [star cube]
+WHERE 
+    (
+        [Dim Frequency].[Frequency Description].&[Weekly]
+    )
+
+
+
+
+
+
+
