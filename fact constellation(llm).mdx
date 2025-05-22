@@ -1,0 +1,27 @@
+SELECT 
+    {[Dim Tool].[Tool Name].Members} ON ROWS, 
+    {[Measures].[Accuracy]} ON COLUMNS
+FROM [fact constellation cube]
+
+
+SELECT 
+    {[Dim Model].[Model Name].Members} ON ROWS, 
+    {[Dim Model Details].[Model Version].Members} ON COLUMNS
+FROM [fact constellation cube]
+
+
+SELECT 
+    {[Measures].[Fact Usage Count]} ON COLUMNS
+FROM [fact constellation cube]
+WHERE ([Dim Model].[Model Name].[chatgpt])
+
+
+
+SELECT 
+    {[Dim User].[User Name].Members} ON ROWS, 
+    {[Measures].[Fact Usage Count]} ON COLUMNS
+FROM [fact constellation cube]
+WHERE (
+    [Dim Tool].[Tool Name].[chatgpt], 
+    [Dim Frequency].[Frequency Description].[Weekly]
+)
