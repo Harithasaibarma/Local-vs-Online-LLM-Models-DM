@@ -1,0 +1,26 @@
+SELECT 
+    {[Dim Frequency].[Frequency Description].Members} ON ROWS, 
+    {[Measures].[Fact Usage Count]} ON COLUMNS
+FROM [snowflake cube]
+
+SELECT 
+    {[Dim User].[Profession Name].Members} ON ROWS, 
+    {[Dim User].[User Name].Members} ON COLUMNS
+FROM [snowflake cube]
+
+
+SELECT 
+    {[Measures].[Fact Usage Count]} ON COLUMNS,
+    {[Dim User].[User Name].Members} ON ROWS
+FROM [snowflake cube]
+WHERE ([Dim Tool].[Tool Name].[Keras])
+
+
+SELECT 
+    {[Dim User].[Profession Name].Members} ON ROWS, 
+    {[Measures].[Fact Usage Count]} ON COLUMNS
+FROM [snowflake cube]
+WHERE (
+    [Dim Tool].[Tool Name].[chatgpt], 
+    [Dim Frequency].[Frequency Description].[Monthly]
+)
